@@ -1,0 +1,26 @@
+{
+  "config": {
+    "Hostname": "",
+    "Domainname": "",
+    "User": "",
+    "AttachStdin": false,
+    "AttachStdout": false,
+    "AttachStderr": false,
+    "ExposedPorts": {
+      "3306/tcp": {}
+    },
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Cmd": null,
+    "ArgsEscaped": true,
+    "Image": "sha256:7534e869ac7783111183cc06c4c002c7f0e84fb0f0d519be3b076783193865ca",
+    "Volumes": {
+      "/var/lib/mysql": {}
+    },
+    "WorkingDir": "",
+    "Entrypoint": null,
+    "OnBuild": [],
+    "Labels": null
+  }
+}
