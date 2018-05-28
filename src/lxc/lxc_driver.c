@@ -80,6 +80,7 @@
 #include "viraccessapichecklxc.h"
 #include "virhostdev.h"
 #include "netdev_bandwidth_conf.h"
+#include "lxc_docker.h"
 
 #define VIR_FROM_THIS VIR_FROM_LXC
 
@@ -1037,8 +1038,8 @@ static char *lxcDomainGetXMLDesc(virDomainPtr dom,
 }
 
 static char *lxcConnectDomainXMLFromNative(virConnectPtr conn,
-                                           const char *nativeFormat,
-                                           const char *nativeConfig,
+                                           const char *format,
+                                           const char *config,
                                            unsigned int flags)
 {
     char *xml = NULL;
@@ -1051,14 +1052,19 @@ static char *lxcConnectDomainXMLFromNative(virConnectPtr conn,
     if (virConnectDomainXMLFromNativeEnsureACL(conn) < 0)
         goto cleanup;
 
-    if (STRNEQ(nativeFormat, LXC_CONFIG_FORMAT)) {
+    if (STREQ(format, LXC_CONFIG_FORMAT)) {
+        if (!(def = lxcParseConfigString(config, caps, driver->xmlopt)))
+            goto cleanup;
+    }
+    else if(STREQ(format, LXC_DOCKER_FORMAT)) {
+        if (!(def = lxcParseDockerConfigString(config, driver->xmlopt)))
+            goto cleanup;
+    }
+    else {
         virReportError(VIR_ERR_INVALID_ARG,
-                       _("unsupported config type %s"), nativeFormat);
+                       _("unsupported config type %s"), format);
         goto cleanup;
     }
-
-    if (!(def = lxcParseConfigString(nativeConfig, caps, driver->xmlopt)))
-        goto cleanup;
 
     xml = virDomainDefFormat(def, caps, 0);
 
