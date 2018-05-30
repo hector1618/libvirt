@@ -1,0 +1,179 @@
+{
+  "architecture": "amd64",
+  "config": {
+    "Hostname": "",
+    "Domainname": "",
+    "User": "",
+    "AttachStdin": false,
+    "AttachStdout": false,
+    "AttachStderr": false,
+    "ExposedPorts": {
+      "3306/tcp": {}
+    },
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Cmd": [
+      "mysqld"
+    ],
+    "ArgsEscaped": true,
+    "Image": "sha256:7534e869ac7783111183cc06c4c002c7f0e84fb0f0d519be3b076783193865ca",
+    "Volumes": {
+      "/var/lib/mysql": {}
+    },
+    "WorkingDir": "/home/hector/mysql",
+    "Entrypoint": [
+      "docker-entrypoint.sh"
+    ],
+    "OnBuild": [],
+    "Labels": null
+  },
+  "container": "db34fcb24f1c3b4aaca62f45903a3c05c32b97dc29ff405e8ec8e485cf3d6366",
+  "container_config": {
+    "Hostname": "db34fcb24f1c",
+    "Domainname": "",
+    "User": "",
+    "AttachStdin": false,
+    "AttachStdout": false,
+    "AttachStderr": false,
+    "ExposedPorts": {
+      "3306/tcp": {}
+    },
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GOSU_VERSION=1.7",
+      "MYSQL_MAJOR=8.0",
+      "MYSQL_VERSION=8.0.11-1debian9"
+    ],
+    "Cmd": [
+      "/bin/sh",
+      "-c",
+      "#(nop) ",
+      "CMD [\"mysqld\"]"
+    ],
+    "ArgsEscaped": true,
+    "Image": "sha256:7534e869ac7783111183cc06c4c002c7f0e84fb0f0d519be3b076783193865ca",
+    "Volumes": {
+      "/var/lib/mysql": {}
+    },
+    "WorkingDir": "",
+    "Entrypoint": [
+      "docker-entrypoint.sh"
+    ],
+    "OnBuild": [],
+    "Labels": {}
+  },
+  "created": "2018-05-04T23:41:16.575901326Z",
+  "docker_version": "17.06.2-ce",
+  "history": [
+    {
+      "created": "2018-04-28T07:09:59.28969784Z",
+      "created_by": "/bin/sh -c #(nop) ADD file:ec5be7eec56a749752ca284359ece04f5eb0b981eac08b8855454c6b16e3893c in / "
+    },
+    {
+      "created": "2018-04-28T07:09:59.664484364Z",
+      "created_by": "/bin/sh -c #(nop)  CMD [\"bash\"]",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-04-30T05:33:10.786518998Z",
+      "created_by": "/bin/sh -c groupadd -r mysql && useradd -r -g mysql mysql"
+    },
+    {
+      "created": "2018-04-30T05:33:17.171880152Z",
+      "created_by": "/bin/sh -c apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*"
+    },
+    {
+      "created": "2018-04-30T05:33:17.456963585Z",
+      "created_by": "/bin/sh -c #(nop)  ENV GOSU_VERSION=1.7",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-04-30T05:33:30.661839165Z",
+      "created_by": "/bin/sh -c set -x \t&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \t&& wget -O /usr/local/bin/gosu \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)\" \t&& wget -O /usr/local/bin/gosu.asc \"https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc\" \t&& export GNUPGHOME=\"$(mktemp -d)\" \t&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \t&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \t&& rm -rf \"$GNUPGHOME\" /usr/local/bin/gosu.asc \t&& chmod +x /usr/local/bin/gosu \t&& gosu nobody true \t&& apt-get purge -y --auto-remove ca-certificates wget"
+    },
+    {
+      "created": "2018-04-30T05:33:31.506028819Z",
+      "created_by": "/bin/sh -c mkdir /docker-entrypoint-initdb.d"
+    },
+    {
+      "created": "2018-04-30T05:33:37.446337148Z",
+      "created_by": "/bin/sh -c apt-get update && apt-get install -y --no-install-recommends \t\tpwgen \t\topenssl \t\tperl \t&& rm -rf /var/lib/apt/lists/*"
+    },
+    {
+      "created": "2018-04-30T05:33:40.994927849Z",
+      "created_by": "/bin/sh -c set -ex; \tkey='A4A9406876FCBD3C456770C88C718D3B5072E1F5'; \texport GNUPGHOME=\"$(mktemp -d)\"; \tgpg --keyserver ha.pool.sks-keyservers.net --recv-keys \"$key\"; \tgpg --export \"$key\" > /etc/apt/trusted.gpg.d/mysql.gpg; \trm -rf \"$GNUPGHOME\"; \tapt-key list > /dev/null"
+    },
+    {
+      "created": "2018-04-30T05:33:41.399767863Z",
+      "created_by": "/bin/sh -c #(nop)  ENV MYSQL_MAJOR=8.0",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-04-30T05:33:41.688382013Z",
+      "created_by": "/bin/sh -c #(nop)  ENV MYSQL_VERSION=8.0.11-1debian9",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-04-30T05:33:42.559433326Z",
+      "created_by": "/bin/sh -c echo \"deb http://repo.mysql.com/apt/debian/ stretch mysql-${MYSQL_MAJOR}\" > /etc/apt/sources.list.d/mysql.list"
+    },
+    {
+      "created": "2018-04-30T05:33:58.42448774Z",
+      "created_by": "/bin/sh -c { \t\techo mysql-community-server mysql-community-server/data-dir select ''; \t\techo mysql-community-server mysql-community-server/root-pass password ''; \t\techo mysql-community-server mysql-community-server/re-root-pass password ''; \t\techo mysql-community-server mysql-community-server/remove-test-db select false; \t} | debconf-set-selections \t&& apt-get update && apt-get install -y mysql-community-client-core=\"${MYSQL_VERSION}\" mysql-community-server-core=\"${MYSQL_VERSION}\" && rm -rf /var/lib/apt/lists/* \t&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \t&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \t&& chmod 777 /var/run/mysqld"
+    },
+    {
+      "created": "2018-04-30T05:33:58.795657976Z",
+      "created_by": "/bin/sh -c #(nop)  VOLUME [/var/lib/mysql]",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-04-30T05:33:59.325392653Z",
+      "created_by": "/bin/sh -c #(nop) COPY dir:110dcf1221c1f9432c68c32a2465ef0b40994f401d5fae0b0de80025bcf839a5 in /etc/mysql/ "
+    },
+    {
+      "created": "2018-05-04T23:41:15.045346669Z",
+      "created_by": "/bin/sh -c #(nop) COPY file:3f638c16c570be34670cbf679b71e916b001b03bd0f6a5b2c683c1a63c402746 in /usr/local/bin/ "
+    },
+    {
+      "created": "2018-05-04T23:41:15.775258053Z",
+      "created_by": "/bin/sh -c ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat"
+    },
+    {
+      "created": "2018-05-04T23:41:16.074787941Z",
+      "created_by": "/bin/sh -c #(nop)  ENTRYPOINT [\"docker-entrypoint.sh\"]",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-05-04T23:41:16.300371764Z",
+      "created_by": "/bin/sh -c #(nop)  EXPOSE 3306/tcp",
+      "empty_layer": true
+    },
+    {
+      "created": "2018-05-04T23:41:16.575901326Z",
+      "created_by": "/bin/sh -c #(nop)  CMD [\"mysqld\"]",
+      "empty_layer": true
+    }
+  ],
+  "os": "linux",
+  "rootfs": {
+    "type": "layers",
+    "diff_ids": [
+      "sha256:d626a8ad97a1f9c1f2c4db3814751ada64f60aed927764a3f994fcd88363b659",
+      "sha256:0fea3c8895d3871f5c577987f09735ae0889811efbad0dfde4d57851a4d40c00",
+      "sha256:ed9fd767a1ff316e1a5896e150cede3ba2bcfe406d2135a6bc6306295cc479af",
+      "sha256:f9dfc87a2e756c25245847a95ced53a6c065405b417d7635a28aa88235b30786",
+      "sha256:5081cf9eb26642b5373aaa6eea7e16b6caefc3a495cf8fa0f296df48d8651f2f",
+      "sha256:0404d129c384e4f45e5ae6a8d89c388a323bc0dda82ea45c6e4d0a442ea1e4b0",
+      "sha256:98bb41f25d3307bc5c124529cfde7c3c27a0d612d918e91a36fc1e852e2e629c",
+      "sha256:7d48d55701f785202eebd2684858ef5dbe87bb2eabc3e1ee761dd0c488f0dccd",
+      "sha256:f1f90a01ed71d9c28fe723613d30259e47446b521853fd8c9e88acb9643c9a79",
+      "sha256:b10190830b1e2ed7ad8e6a8547769c490c0e598f5830f8fc317754e7ca786fcb",
+      "sha256:4348d854faed86f968be8a7d8129dc7b3a51c53b45c3f6601152fb7cf53e2729",
+      "sha256:7f92bc2c17638c77c6fd04f5466431ee5cd0a44799738af6d2f4236568f93098"
+    ]
+  }
+}

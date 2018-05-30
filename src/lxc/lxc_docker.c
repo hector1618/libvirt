@@ -40,6 +40,25 @@ struct lxcDockerEnv {
     size_t envCount;
 };
 
+static int lxcDockerSetWorkingDir(virDomainDefPtr def, virJSONValuePtr config)
+{
+    const char *workingDir = NULL;
+
+    if(!(workingDir = virJSONValueObjectGetString(config, "WorkingDir")))
+        goto error;
+
+    if(strcmp(workingDir, "") == 0 || VIR_STRDUP(def->os.initdir, workingDir) < 0)
+        goto cleanup;
+
+    return 1;
+
+error:
+    return -1;
+
+cleanup:
+    return 0;
+}
+
 static int lxcDockerEnvIteratorCallback(size_t pos ATTRIBUTE_UNUSED,
                                         virJSONValuePtr item,
                                         void *opaque) {
