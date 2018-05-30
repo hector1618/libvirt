@@ -27,10 +27,8 @@
 
 # define LXC_DOCKER_FORMAT "docker"
 
-virDomainDefPtr lxcParseDockerConfigString(const char *config,
+virDomainDefPtr lxcParseDockerConfig(const char *config,
                                            virDomainXMLOptionPtr xmlopt);
 
-// #TODO
-// Change the name of the function
 
 #endif /* __LXC_DOCKER_H__ */

@@ -1057,7 +1057,7 @@ static char *lxcConnectDomainXMLFromNative(virConnectPtr conn,
             goto cleanup;
     }
     else if(STREQ(format, LXC_DOCKER_FORMAT)) {
-        if (!(def = lxcParseDockerConfigString(config, driver->xmlopt)))
+        if (!(def = lxcParseDockerConfig(config, driver->xmlopt)))
             goto cleanup;
     }
     else {

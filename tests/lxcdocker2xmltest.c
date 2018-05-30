@@ -57,7 +57,7 @@ testCompareXMLToConfigFiles(const char *xmlfile,
     if (virTestLoadFile(configfile, &config) < 0)
         goto fail;
 
-    vmdef = lxcParseDockerConfigString(config, xmlopt);
+    vmdef = lxcParseDockerConfig(config, xmlopt);
 
     if ((vmdef && expectError) || (!vmdef && !expectError))
         goto fail;
@@ -133,6 +133,7 @@ mymain(void)
     } while (0)
 
     DO_TEST("simple", false);
+    DO_TEST("env", false);
 
     virObjectUnref(xmlopt);
     virObjectUnref(caps);

@@ -13,6 +13,12 @@
     "Tty": false,
     "OpenStdin": false,
     "StdinOnce": false,
+    "Env": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GOSU_VERSION=1.7",
+      "MYSQL_MAJOR=8.0",
+      "MYSQL_VERSION=8.0.11-1debian9"
+    ],
     "Cmd": [
       "mysqld"
     ],
