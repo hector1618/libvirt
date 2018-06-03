@@ -135,6 +135,7 @@ mymain(void)
     DO_TEST("simple", false);
     DO_TEST("workingdir", false);
     DO_TEST("env", false);
+    DO_TEST("cmd", false);
 
     virObjectUnref(xmlopt);
     virObjectUnref(caps);

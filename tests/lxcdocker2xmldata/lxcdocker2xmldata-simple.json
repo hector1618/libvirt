@@ -13,18 +13,14 @@
     "Tty": false,
     "OpenStdin": false,
     "StdinOnce": false,
-    "Cmd": [
-      "mysqld"
-    ],
+    "Cmd": null,
     "ArgsEscaped": true,
     "Image": "sha256:7534e869ac7783111183cc06c4c002c7f0e84fb0f0d519be3b076783193865ca",
     "Volumes": {
       "/var/lib/mysql": {}
     },
     "WorkingDir": "",
-    "Entrypoint": [
-      "docker-entrypoint.sh"
-    ],
+    "Entrypoint": null,
     "OnBuild": [],
     "Labels": null
   },

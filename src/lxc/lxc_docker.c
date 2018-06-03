@@ -26,9 +26,9 @@
 #include "domain_conf.h"
 #include "virlog.h"
 #include "lxc_docker.h"
-#include "util/virjson.h"
 #include "util/virstring.h"
 #include "util/viralloc.h"
+#include "util/virjson.h"
 
 
 #define VIR_FROM_THIS VIR_FROM_LXC
@@ -106,7 +106,7 @@ static int lxcDockerSetEnv(virDomainDefPtr def,
 
 
     if(!(env = virJSONValueObjectGetArray(config, "Env")))
-            return 1;
+            goto cleanup;
 
     if(virJSONValueArrayForeachSteal(env,
                                      &lxcDockerEnvIteratorCallback,
@@ -118,9 +118,72 @@ static int lxcDockerSetEnv(virDomainDefPtr def,
 
     return 1;
 
+cleanup:
+    return 0;
 error:
     return -1;
 }
+
+static int lxcDockerCmdIteratorCallback(size_t pos ATTRIBUTE_UNUSED,
+                                        virJSONValuePtr item,
+                                        void *opaque) {
+
+    struct lxcDockerEnv *args = opaque;
+    const char *initarg = virJSONValueGetString(item);
+
+    if(!args->def->os.init) {
+        if (VIR_STRDUP(args->def->os.init, initarg) < 0)
+            goto error;
+        else {
+            return 1;
+        }
+    }
+
+    if (VIR_EXPAND_N(args->def->os.initargv, args->envCount, 1) < 0)
+        goto error;
+    if (VIR_STRDUP(args->def->os.initargv[args->envCount-1], initarg) < 0)
+        goto error;
+
+    return 1;
+
+error:
+    return -1;
+}
+
+static int lxcDockerSetCmd(virDomainDefPtr def, virJSONValuePtr config) {
+
+    virJSONValuePtr entryPoint = NULL;
+    virJSONValuePtr cmd = NULL;
+    struct lxcDockerEnv callbackArg = {def, 0};
+
+    if ((entryPoint = virJSONValueObjectGetArray(config, "Entrypoint")) &&
+            virJSONValueIsArray(entryPoint)) {
+        if(virJSONValueArrayForeachSteal(entryPoint,
+                                         &lxcDockerCmdIteratorCallback,
+                                         &callbackArg) < 0)
+
+            goto error;
+    }
+
+    if ((cmd = virJSONValueObjectGetArray(config, "Cmd")) &&
+        virJSONValueIsArray(cmd)) {
+        if(virJSONValueArrayForeachSteal(cmd,
+                                         &lxcDockerCmdIteratorCallback,
+                                         &callbackArg) < 0)
+            goto error;
+    }
+
+    if (callbackArg.envCount > 0 &&
+        VIR_EXPAND_N(callbackArg.def->os.initargv,
+                     callbackArg.envCount, 1) < 0)
+        goto error;
+
+    return 1;
+
+error:
+    return -1;
+}
+
 
 virDomainDefPtr lxcParseDockerConfig(const char *config ATTRIBUTE_UNUSED,
                                            virDomainXMLOptionPtr xmlopt ATTRIBUTE_UNUSED) {
@@ -175,6 +238,12 @@ virDomainDefPtr lxcParseDockerConfig(const char *config ATTRIBUTE_UNUSED,
     if(lxcDockerSetEnv(vmdef, jsonObj) < 0) {
         virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
                        _("failed to parse Env"));
+        goto error;
+    }
+
+    if(lxcDockerSetCmd(vmdef, jsonObj) < 0) {
+        virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
+                       _("failed to parse Cmd"));
         goto error;
     }
 
