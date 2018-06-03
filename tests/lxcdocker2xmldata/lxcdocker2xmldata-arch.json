@@ -1,4 +1,5 @@
 {
+  "architecture": "amd64",
   "config": {
     "Hostname": "",
     "Domainname": "",
@@ -12,14 +13,24 @@
     "Tty": false,
     "OpenStdin": false,
     "StdinOnce": false,
-    "Cmd":null,
+    "Env": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GOSU_VERSION=1.7",
+      "MYSQL_MAJOR=8.0",
+      "MYSQL_VERSION=8.0.11-1debian9"
+    ],
+    "Cmd": [
+      "mysqld"
+    ],
     "ArgsEscaped": true,
     "Image": "sha256:7534e869ac7783111183cc06c4c002c7f0e84fb0f0d519be3b076783193865ca",
     "Volumes": {
       "/var/lib/mysql": {}
     },
-    "WorkingDir": "/home/hector/mysql",
-    "Entrypoint": null,
+    "WorkingDir": "",
+    "Entrypoint": [
+      "docker-entrypoint.sh"
+    ],
     "OnBuild": [],
     "Labels": null
   },
@@ -43,7 +54,12 @@
       "MYSQL_MAJOR=8.0",
       "MYSQL_VERSION=8.0.11-1debian9"
     ],
-    "Cmd": null,
+    "Cmd": [
+      "/bin/sh",
+      "-c",
+      "#(nop) ",
+      "CMD [\"mysqld\"]"
+    ],
     "ArgsEscaped": true,
     "Image": "sha256:7534e869ac7783111183cc06c4c002c7f0e84fb0f0d519be3b076783193865ca",
     "Volumes": {
