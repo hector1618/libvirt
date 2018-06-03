@@ -139,6 +139,8 @@ static int lxcDockerCmdIteratorCallback(size_t pos ATTRIBUTE_UNUSED,
         }
     }
 
+    // #TODO
+    // Handle '#(nop)' stuff
     if (VIR_EXPAND_N(args->def->os.initargv, args->envCount, 1) < 0)
         goto error;
     if (VIR_STRDUP(args->def->os.initargv[args->envCount-1], initarg) < 0)
@@ -188,6 +190,8 @@ static int lxcDockerSetUser(virDomainDefPtr def, virJSONValuePtr config)
 {
     const char *user= NULL;
 
+    // #TODO
+    // Handle groups
     if(!(user = virJSONValueObjectGetString(config, "User")))
         goto error;
 
