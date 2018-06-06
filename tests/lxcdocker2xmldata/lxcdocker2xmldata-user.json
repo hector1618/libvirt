@@ -1,0 +1,36 @@
+{
+  "config": {
+    "Hostname": "",
+    "Domainname": "",
+    "User": "hector",
+    "AttachStdin": false,
+    "AttachStdout": false,
+    "AttachStderr": false,
+    "ExposedPorts": {
+      "3306/tcp": {}
+    },
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GOSU_VERSION=1.7",
+      "MYSQL_MAJOR=8.0",
+      "MYSQL_VERSION=8.0.11-1debian9"
+    ],
+    "Cmd": [
+      "mysqld"
+    ],
+    "ArgsEscaped": true,
+    "Image": "sha256:b88757251725b5084f3b1c872f11408117e530393417ee66a74be3b1f182cf8c",
+    "Volumes": {
+      "/var/lib/mysql": {}
+    },
+    "WorkingDir": "",
+    "Entrypoint": [
+      "docker-entrypoint.sh"
+    ],
+    "OnBuild": [],
+    "Labels": null
+  }
+}
