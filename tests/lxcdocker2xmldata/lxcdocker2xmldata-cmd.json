@@ -1,0 +1,10 @@
+{
+  "config": {
+    "Cmd": [
+      "mysqld"
+    ],
+    "Entrypoint": [
+      "docker-entrypoint.sh"
+    ]
+  }
+}
