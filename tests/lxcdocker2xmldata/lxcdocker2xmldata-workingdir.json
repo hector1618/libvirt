@@ -1,0 +1,11 @@
+{
+  "config": {
+    "WorkingDir": "/home/hector/mysql",
+    "Cmd": [
+      "mysqld"
+    ],
+    "Entrypoint": [
+      "docker-entrypoint.sh"
+    ]
+  }
+}
