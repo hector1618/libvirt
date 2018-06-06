@@ -175,6 +175,19 @@ static int lxcDockerSetWorkingDir(virDomainDefPtr def, virJSONValuePtr config)
     return 0;
 }
 
+static int lxcDockerSetUser(virDomainDefPtr def, virJSONValuePtr config)
+{
+    const char *user = NULL;
+
+    if (!(user = virJSONValueObjectGetString(config, "User")))
+        return 0;
+
+    if (STREQ(user, "") || VIR_STRDUP(def->os.inituser, user) < 0)
+        return -1;
+
+    return 0;
+}
+
 virDomainDefPtr lxcParseDockerConfig(const char *config,
                                      virDomainXMLOptionPtr xmlopt)
 {
@@ -234,6 +247,12 @@ virDomainDefPtr lxcParseDockerConfig(const char *config,
         virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
                        _("failed to parse WorkingDir"));
         goto error;
+
+    }
+
+    if (lxcDockerSetUser(vmdef, jsonObj) < 0) {
+        virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
+                       _("failed to parse User"));
     }
 
     goto cleanup;

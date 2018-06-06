@@ -1,0 +1,8 @@
+{
+  "config": {
+    "User": "hector",
+    "Cmd": [
+      "/bin/sh"
+    ]
+  }
+}
