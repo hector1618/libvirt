@@ -40,6 +40,25 @@ struct lxcDockerIteratorArgs {
     size_t count;
 };
 
+static int lxcDockerSetWorkingDir(virDomainDefPtr def, virJSONValuePtr config)
+{
+    const char *workingDir = NULL;
+
+    if (!(workingDir = virJSONValueObjectGetString(config, "WorkingDir")))
+        goto error;
+
+    if (STREQ(workingDir, "") || VIR_STRDUP(def->os.initdir, workingDir) < 0)
+        goto cleanup;
+
+    return 1;
+
+ error:
+    return -1;
+
+ cleanup:
+    return 0;
+}
+
 static int lxcDockerEnvIteratorCallback(size_t pos ATTRIBUTE_UNUSED,
                                         virJSONValuePtr item,
                                         void *opaque)
@@ -147,6 +166,12 @@ virDomainDefPtr lxcParseDockerConfig(const char *config,
     if (lxcDockerSetEnv(vmdef, jsonObj) < 0) {
         virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
                        _("failed to parse Env"));
+        goto error;
+    }
+
+    if (lxcDockerSetWorkingDir(vmdef, jsonObj) < 0) {
+        virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
+                       _("failed to parse WorkingDir"));
         goto error;
     }
 
