@@ -202,18 +202,34 @@ static int lxcDockerSetUser(virDomainDefPtr def, virJSONValuePtr config)
     return 0;
 }
 
+static const char *lxcDockerSetArch(virJSONValuePtr config)
+{
+    const char *archStr = NULL;
+
+
+    if (!(archStr = virJSONValueObjectGetString(config, "architecture")))
+        return NULL;
+
+    if (STREQ(archStr, ""))
+        return NULL;
+
+    return archStr;
+}
+
 virDomainDefPtr lxcParseDockerConfig(const char *config,
                                      virDomainXMLOptionPtr xmlopt)
 {
 
 
     virDomainDefPtr vmdef = NULL;
+    virJSONValuePtr parentJsonObj = NULL;
     virJSONValuePtr jsonObj = NULL;
+    const char *archStr = NULL;
 
-    if (!(jsonObj = virJSONValueFromString(config)))
+    if (!(parentJsonObj = virJSONValueFromString(config)))
         return NULL;
 
-    if (!(jsonObj = virJSONValueObjectGetObject(jsonObj, "config")))
+    if (!(jsonObj = virJSONValueObjectGetObject(parentJsonObj, "config")))
         return NULL;
 
     if (!(vmdef = virDomainDefNew()))
@@ -242,6 +258,16 @@ virDomainDefPtr lxcParseDockerConfig(const char *config,
         goto error;
 
     vmdef->os.type = VIR_DOMAIN_OSTYPE_EXE;
+
+    archStr = lxcDockerSetArch(parentJsonObj);
+    if (archStr != NULL) {
+        virArch arch = virArchFromString(archStr);
+        if (arch == VIR_ARCH_NONE && STREQ(archStr, "x86"))
+            arch = VIR_ARCH_I686;
+        else if (arch == VIR_ARCH_NONE && STREQ(archStr, "amd64"))
+            arch = VIR_ARCH_X86_64;
+        vmdef->os.arch = arch;
+    }
 
     if (lxcDockerSetEnv(vmdef, jsonObj) < 0) {
         virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
