@@ -188,6 +188,27 @@ static int lxcDockerSetUser(virDomainDefPtr def, virJSONValuePtr config)
     return 0;
 }
 
+static int lxcDockerSetArch(virDomainDefPtr def,
+                            virJSONValuePtr config)
+{
+    const char *archStr = NULL;
+    virArch arch;
+
+    if (!(archStr = virJSONValueObjectGetString(config, "architecture")))
+        return 0;
+
+    arch = virArchFromString(archStr);
+    if (arch == VIR_ARCH_NONE && STREQ(archStr, "x86"))
+        arch = VIR_ARCH_I686;
+    else if (arch == VIR_ARCH_NONE && STREQ(archStr, "amd64"))
+        arch = VIR_ARCH_X86_64;
+    else
+        return -1;
+
+    def->os.arch = arch;
+    return 0;
+}
+
 virDomainDefPtr lxcParseDockerConfig(const char *config,
                                      virDomainXMLOptionPtr xmlopt)
 {
@@ -253,6 +274,11 @@ virDomainDefPtr lxcParseDockerConfig(const char *config,
     if (lxcDockerSetUser(vmdef, jsonObj) < 0) {
         virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
                        _("failed to parse User"));
+    }
+
+    if (lxcDockerSetArch(vmdef, parentJsonObj) < 0) {
+        virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
+                       _("failed to parse architecture"));
     }
 
     goto cleanup;

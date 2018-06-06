@@ -1,0 +1,17 @@
+<domain type='lxc'>
+  <uuid>730463d1-92cd-420b-8b67-13bdc498e9e7</uuid>
+  <memory unit='KiB'>65536</memory>
+  <currentMemory unit='KiB'>0</currentMemory>
+  <vcpu placement='static'>1</vcpu>
+  <os>
+    <type arch='x86_64'>exe</type>
+    <init>docker-entrypoint.sh</init>
+    <initarg>mysqld</initarg>
+  </os>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+  </devices>
+</domain>
